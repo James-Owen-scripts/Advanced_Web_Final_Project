@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+/* HTML and body styles */
+html {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: rgb(38, 41, 57);
+    color: white;
+}
+
+/* heading styles */
+h1, h2, h3, h4, h5, h6, dt {
+    font-family: Georgia, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    color: rgb(23, 56, 239);
+}
+h2 {
+    color: rgb(59, 86, 235);
+}
+h3 {
+    color: rgb(82, 104, 230);
+}
+h4 {
+    color: rgb(111, 128, 224);
+}
+h5 {
+    color: rgb(143, 155, 226);
+}
+h6 {
+    color: rgb(187, 193, 231);
+}
+/* Paragraph styles */
+p {
+    color: white;
+}
+
+a {
+    font-family: Georgia, Arial, Helvetica, sans-serif;
+    color: white;
+}

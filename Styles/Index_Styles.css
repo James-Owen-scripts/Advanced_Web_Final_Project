@@ -1,0 +1,11 @@
+/* Image styles */
+img#logo {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* div styles */
+div#aboutApp, div#indexBtns{
+    background-color: rgb(38, 41, 57);
+}

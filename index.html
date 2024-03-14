@@ -1,11 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Powerlifting Discussion Forum</title>
+    <link rel="icon" type="image/x-icon" href="Resources/Images/logo.png" />
+
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--JQuery-->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+
+    <!--Style Sheet-->
+    <link href="Styles/Index_Styles.css" rel="stylesheet" />
+    <link href="Styles/OverallStyles.css" rel="stylesheet" />
 </head>
 <body>
-    
+    <div class="container-fluid">
+        <div class="row pt-5 bg-dark">
+            <div class="col-sm-4 col-12">
+                <img id="logo" src="Resources/Images/logo.png" class="rounded-circle" alt="Cinque Terre"> 
+            </div>
+            <div class="col-sm-8 col-12 mt-5">
+                <h1>Welcome to The Powerlifting Discussion Forum</h1>
+            </div>
+        </div>
+        <div class="row m-8" id="indexBtns">
+            <div class="col-sm-6 col-12 mt-4">
+                <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button> <!-- Added w-100 to make button full width -->
+            </div>
+            <div class="col-sm-6 col-12 mt-4">
+                <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#SignUpModal">Sign Up</button> <!-- Added w-100 to make button full width -->
+            </div>
+        </div>
+        <div class="row" id="aboutApp">
+            <div class="col-lg-3 col-sm-6 col-12 pt-5 pb-5 mt-3 bg-info">
+                <h2>Find like-minded people in the sport of powerlifting!</h2>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12 pt-5 pb-5 mt-3 bg-warning">
+                <h2>Ask questions to people through posting and commenting!</h2>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12 pt-5 pb-5 mt-3 bg-info">
+                <h2>Customise your profile for experience and lift totals!</h2>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12 pt-5 pb-5 mt-3 bg-warning">
+                <h2>Sort and search posts to find already asked questions and answers you are looking for!</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-12">
+                        <h2 class="modal-title">Account Login</h2>
+                        <h3 class="modal-title">For Powerlifting Discussion Forum</h3>
+                    </div>
+                </div>                
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="hidden" name='page' value='index'>
+                        <input type="hidden" name='command' value='login'>
+
+                        <div class="col-12">
+                            <p class="text-bg-danger" id="login_incorrect"></p>
+                        </div>
+                        <div class="mb-3 mt-3 col-12">
+                            <label class="control-label" for="username">Username:</label> <span class="text-bg-danger" id="login-bad-username"></span>
+                            <input type="text" class="form-control" id="username" name='username' placeholder="Enter Your Username">
+                        </div>
+                        <div class="mb-3 mt-3 col-12">
+                            <label class="control-label" for="password">Password:</label> <span class="text-bg-danger" id="login-bad-password"></span>
+                            <input type="password" class="form-control" id="password" name='password' placeholder="Enter Your Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group"> 
+                        <button type='button'  class="btn btn-outline-danger" data-bs-dismiss='modal'>Close</button>
+                        <button type="button" id="model-login-submit" class="btn btn-outline-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SignUpModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-12">
+                        <h2 class="modal-title">Account Sign Up</h2>
+                        <h3 class="modal-title">For Powerlifting Discussion Forum</h3>
+                    </div>
+                </div>                
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="hidden" name='page' value='index'>
+                        <input type="hidden" name='command' value='signUp'>
+                        <div class="col-12">
+                            <p class="text-bg-danger" id="signUp_fill_in"></p>
+                        </div>
+                        <div class="mb-3 mt-3 col-12">
+                            <label class="control-label" for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name='username' placeholder="Enter Your Username">
+                        </div>
+                        <div class="mb-3 mt-3 col-12">
+                            <label class="control-label" for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name='password' placeholder="Enter Your Password">
+                        </div>
+                        <div class="mb-3 mt-3 col-12">
+                            <label class="control-label" for="email">Email:</label> <span class="text-bg-danger" id="signUp-bad-email"></span>
+                            <input type="email" class="form-control" id="email" name='email' placeholder="Enter Your Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group"> 
+                        <button type='button'  class="btn btn-outline-danger" data-bs-dismiss='modal'>Close</button>
+                        <button type="button" id="model-signUp-submit" class="btn btn-outline-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+     function logIn() {
+        let query = {
+            page: $('#loginModal input[name="page"]').val(),
+            command: $('#loginModal input[name="command"]').val(),
+            username: $('#loginModal input[name="username"]').val(),
+            password: $('#loginModal input[name="password"]').val()
+        };
+        $.post('Controller.php', query, function(data) {
+            console.log(data);
+            if (data === 'false') {
+                $('#login_incorrect').html('* Incorrect login data');
+            }
+            else {
+                $('html').html(data);
+            }
+        });
+    }
+    // sign up function
+    function signUp() {
+        let query = {
+            page: $('#SignUpModal input[name="page"]').val(),
+            command: $('#SignUpModal input[name="command"]').val(),
+            username: $('#SignUpModal input[name="username"]').val(),
+            password: $('#SignUpModal input[name="password"]').val(),
+            email: $('#SignUpModal input[name="email"]').val(),
+        };
+        if (query.username === '' || query.password === '' || query.email === '') {
+            $('#signUp_fill_in').html('* All values must be filled in');
+        }
+        else {
+            $('#signUp_fill_in').html('');
+            $.post('Controller.php', query, function(data) {
+                if (data === 'userCreated') {
+                    // hide modal window
+                    $('#SignUpModal').modal('hide');
+
+                    // make sure userwarnings are cleared
+                    $('#signUp-bad-username').html('');
+                    $('#signUp-bad-password').html('');
+                    $('#signUp-bad-email').html('');
+
+                    // let user know that they have created an account
+                    alert('User has been created!');
+                }
+                else {
+                    // let user know they entered incorrect data
+                    data = JSON.parse(data);
+                    console.log(data);
+                    if(data['badUsername'] === 'true') {
+                        $('#signUp-bad-username').html('* Username already exists');
+                    }
+                    if(data['badPassword'] === 'true') {
+                        $('#signUp-bad-password').html('* Password must be at least 8 characters');
+                    }
+                    if(data['badEmail'] === 'true') {
+                        $('#signUp-bad-email').html('* Email already in use');
+                    }
+                }
+            });
+        }
+    }
+   
+    // document ready containing event listeners
+    $(document).ready(function() {
+        $('#model-login-submit').click(logIn);
+        $('#model-signUp-submit').click(signUp);
+    });
+</script>
+
 </html>
