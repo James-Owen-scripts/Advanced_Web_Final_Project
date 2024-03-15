@@ -22,6 +22,7 @@
                 break;
 
             case 'login':
+                // TODO fix sessions
                 if (validLogin($_POST['username'], $_POST['password'])) {
                     session_start();
                     $_SESSION['signed'] = 'YES';
