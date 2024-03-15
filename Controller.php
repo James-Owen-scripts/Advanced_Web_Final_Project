@@ -1,5 +1,5 @@
 <?php
-    if(empty($_POST['page'])) {
+    if (empty($_POST['page'])) {
         include('index.html');
         exit();
     }
@@ -23,7 +23,13 @@
 
             case 'login':
                 if (validLogin($_POST['username'], $_POST['password'])) {
-                    include('HTML_Pages/Login_Page.html');
+                    session_start();
+                    $_SESSION['signed'] = 'YES';
+                    $_SESSION['username'] = $_POST['username'];
+                    $_SESSION['experience'] = 'none';
+                    $_SESSION['group-by'] = 'none';
+                    $_SESSION['search'] = 'none';
+                    include('HTML_Pages/Start_Page.html');
                 }
                 else {
                     echo 'false';

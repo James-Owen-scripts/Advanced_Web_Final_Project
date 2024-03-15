@@ -1,0 +1,15 @@
+/* Image styles */
+img#logo {
+    height: 40px;
+    width: auto;
+}
+
+/* div styles */
+
+div > div#card {
+    position: relative;
+    height: 80%;
+    width: 80%;
+    left: calc(50% - 40%);
+    top: calc(50% - 40%);
+}
