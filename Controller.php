@@ -65,6 +65,16 @@
                 exit();
                 break;
 
+            case 'profile':
+                include('HTML_Pages/Profile_Page.html');
+                exit();
+                break;
+
+            case 'myPosts':
+                include('HTML_Pages/myPosts_Page.html');
+                exit();
+                break;
+
             case 'getPosts':
                 echo json_encode(getFilteredPosts($_SESSION['search'], $_SESSION['experience'], $_SESSION['order']));
                 exit();
