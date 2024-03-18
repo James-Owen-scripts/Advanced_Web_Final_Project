@@ -13,3 +13,12 @@ div > div#card {
     left: calc(50% - 40%);
     top: calc(50% - 40%);
 }
+
+body {
+    background-color: rgb(38, 41, 57);;
+}
+
+div#startPagePosts {
+    background-color: white;
+    padding-bottom: 10em;
+}

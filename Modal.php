@@ -1,5 +1,5 @@
 <?php
-    $JSON_File = file_get_contents('DataBase.JSON');
+    $JSON_File = file_get_contents('Resources/DATA/DataBase.JSON');
     $JSON_DataBase_Info = json_decode($JSON_File, true);
 
     $connectObj = $JSON_DataBase_Info['LocalDB'];
@@ -59,5 +59,33 @@
         $result = mysqli_query($conn, $sql);
         
         return mysqli_num_rows($result) == 1;
+    }
+
+    // Function to get all user posts
+    function getFilteredPosts($term, $experience, $order) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['userPosts']['getFilteredPosts'][$order];
+        // replace the term
+        $sql = str_replace('[TERM]', $term, $sql);
+        // if user doesn't set the experience of the posters filter
+        if ($experience == '') {
+            $sql = str_replace('[EXPERIENCE]', '', $sql);
+        }
+        else {
+            $sql = str_replace('[EXPERIENCE]', $JSON_DataBase_Info['userPosts']['getFilteredPosts']['experience'], $sql);
+        }
+        $result = mysqli_query($conn, $sql);
+        $rows = [];
+        $i = 0;
+        while($row = mysqli_fetch_assoc($result)) {
+            $rows[$i++] = $row;
+        }
+        return $rows;
+    }
+
+    // Function to create a post
+    function createPost($u, $title, $content){
+
     }
 ?>

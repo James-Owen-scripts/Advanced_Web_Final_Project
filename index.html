@@ -137,12 +137,11 @@
             password: $('#loginModal input[name="password"]').val()
         };
         $.post('Controller.php', query, function(data) {
-            console.log(data);
             if (data === 'false') {
                 $('#login_incorrect').html('* Incorrect login data');
             }
             else {
-                $('html').html(data);
+                document.write(data);
             }
         });
     }

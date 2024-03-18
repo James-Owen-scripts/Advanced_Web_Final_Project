@@ -1,7 +1,16 @@
 <?php
     if (empty($_POST['page'])) {
-        include('index.html');
-        exit();
+        session_start();
+        if (!empty($_SESSION['signed'])) {
+            include('HTML_Pages/Start_Page.html');
+            exit();
+        }
+        else {
+            session_unset();
+            session_destroy();
+            include('index.html');
+            exit();
+        }
     }
 
     require('Modal.php');
@@ -22,14 +31,14 @@
                 break;
 
             case 'login':
-                // TODO fix sessions
                 if (validLogin($_POST['username'], $_POST['password'])) {
                     session_start();
                     $_SESSION['signed'] = 'YES';
                     $_SESSION['username'] = $_POST['username'];
-                    $_SESSION['experience'] = 'none';
-                    $_SESSION['group-by'] = 'none';
-                    $_SESSION['search'] = 'none';
+                    // set filters for search
+                    $_SESSION['experience'] = '';
+                    $_SESSION['order'] = 'Newest-To-Oldest';
+                    $_SESSION['search'] = '';
                     include('HTML_Pages/Start_Page.html');
                 }
                 else {
@@ -40,6 +49,41 @@
 
             default:
                 echo "Unknown command from index Page<br>";
+                exit();
+                break;
+        }
+    }
+    else if($_POST['page'] == 'startPage') {
+
+        session_start();
+
+        switch($_POST['command']) {
+            case 'logOut':
+                session_unset();
+                session_destroy();
+                include('index.html');
+                exit();
+                break;
+
+            case 'getPosts':
+                echo json_encode(getFilteredPosts($_SESSION['search'], $_SESSION['experience'], $_SESSION['order']));
+                exit();
+                break;
+
+            case 'getFilters':
+                echo json_encode($_SESSION);
+                exit();
+                break;
+
+            case 'applyFilters':
+                $_SESSION['experience'] = $_POST['experience'];
+                $_SESSION['order'] = $_POST['order'];
+                $_SESSION['search'] = $_POST['search'];
+                exit();
+                break;
+                
+            default:
+                echo "Unknown command from start Page<br>";
                 exit();
                 break;
         }

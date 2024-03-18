@@ -34,13 +34,15 @@
                   </li>
                 </ul>
                 <div class="d-flex">
-                    <a class="nav-link text-danger" href="#">Log Out</a>
+                    <a class="nav-link text-danger" id="logOutNav" href="#">Log Out</a>
                 </div>
               </div>
             </div>
         </nav>
-        <div class="container">
-            <form>
+        <div class="container" id="startPagePosts">
+            <form id="filter-form">
+                <input type="hidden" name="page" value="startPage" />
+                <input type="hidden" name="command" value="applyFilters" />
                 <div class="row bg-secondary mt-10">
                     <div class="col">
                         <div class="mb-3">
@@ -51,9 +53,9 @@
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="group-by">Group-by:</label>
-                            <select class="form-control" id="group-by">
-                                <option>Newest-to-Oldest</option>
-                                <option>Oldest-to-Newest</option>
+                            <select class="form-control" id="group-by" name="order">
+                                <option>Newest-To-Oldest</option>
+                                <option>Oldest-To-Newest</option>
                                 <option>Popularity</option>
                             </select>
                         </div>
@@ -61,8 +63,8 @@
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="experience">Experience:</label>
-                            <select class="form-control" id="experience">
-                                <option>none</option>
+                            <select class="form-control" id="experience" name="experience">
+                                <option></option>
                                 <option>Begginner</option>
                                 <option>Intermediate</option>
                                 <option>Expert</option>
@@ -71,40 +73,152 @@
                         </div>
                     </div>
                     <div class="col">
-                        <button type="submit" class="mt-4 btn btn-primary">Submit</button>
+                        <button id="filter-submit" style="position: relative; top: 2em;" type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>
-            <div class="row mt-3">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card mt-3 bg-info">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Content</div>
-                        <div class="card-footer">Footer</div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card mt-3 bg-info">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Content</div>
-                        <div class="card-footer">Footer</div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card mt-3 bg-info">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Content</div>
-                        <div class="card-footer">Footer</div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card mt-3 bg-info">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Content</div>
-                        <div class="card-footer">Footer</div>
-                    </div>
-                </div>
-            </div>
+            <div id="posts"></div>
         </div>
     </body>
+    <!--JQuery control for document-->
+    <script>
+        let controller = '../Controller.php';
+
+        function logOut() {
+            let query = {
+                page: 'startPage',
+                command: 'logOut'
+            };
+            $.post(controller, query, function(data) {
+                location.reload();
+            });
+        }
+        $('#logOutNav').click(logOut);
+
+        function addPosts() {
+            $.ajax({url: controller,
+                data: {page:'startPage', command: 'getPosts'},
+                type: 'post',    
+                success: function(data) {
+                    let post_data = JSON.parse(data);
+                    let str = '';
+                    // add cards to document
+                    for (let i = 0; i < post_data.length; i++) {
+                        // check if a new row needs to be added
+                        if (i !== 0) {
+                            str += '</div>';
+                        }
+                        str += '<div class="row mt-3">';
+                        // add the card
+                        str += '<div class="col-12"><div class="card mt-3 bg-info" data-id="' + post_data[i]['POST_ID'] + '"">';
+                        // card header with username
+                        str += '<div class="card-header"><h3>' + post_data[i]['USERNAME'] + '</h3>';
+                        // check if user has experience
+                        if (post_data[i]['LIFT_EXPERIENCE'] !== null) {
+                            str += '<p style="color: red;">Experience: ' + post_data[i]['LIFT_EXPERIENCE'] + '</p>';
+                        }
+                        else {
+                            str += '<p style="color: red;">Experience: NOT SET </p>';
+                        }
+                        str += '<p style="color: grey;">';
+                        // CHECK IF USER HAS SET A SQUAT TOTAL
+                        if (post_data[i]['SQUAT_TOTAL'] !== null ) {
+                            str += 'Totals: ( SQ-' + post_data[i]['SQUAT_TOTAL'] + 'Kg | ';
+                        }
+                        else {
+                            str += 'Totals: (SQ-NA | ';
+                        }
+                        // CHECK IF USER HAS SET A bench TOTAL
+                        if (post_data[i]['BENCH_TOTAL'] !== null ) {
+                            str += 'BP-NA|' + post_data[i]['BENCH_TOTAL'] + 'Kg | ';
+                        }
+                        else {
+                            str += 'BP-NA | ';
+                        }
+                        // CHECK IF USER HAS SET A SQUAT TOTAL
+                        if (post_data[i]['DEADLIFT_TOTAL'] !== null ) {
+                            str += 'DL-' + post_data[i]['SQUAT_TOTAL'] + 'Kg )</p>';
+                        }
+                        else {
+                            str += 'DL-NA)</p>';
+                        }
+                        // end head and add card body
+                        str += '</div><div class="card-body"><h2>' + post_data[i]['POST_TITLE'] + '</h2></div>';
+                        // footer of the card
+                        str += '<div class="card-footer"><p>Date posted: ' + post_data[i]['DATE_POSTED'] + '</p></div></div></div>';
+                        // add div end when the end of the posts has been reached
+                        if (i === post_data.length -1) {
+                            str += '</div>';
+                        }
+                    }
+                    $('div#posts').html(str); // add posts to page
+
+                    // make posts dynamic hoverable
+                    $('div[data-id]').hover(
+                        function() {
+                            $(this).removeClass("bg-info").addClass("bg-warning");
+                            $(this).css('cursor', 'pointer');
+                        },
+                        function() {
+                            $(this).removeClass("bg-warning").addClass("bg-info");
+                        }
+                    );
+                    
+                    // add event listeners for clicking
+                    $('div[data-id]').click(function() {
+                        // TODO: make click take user to next page
+                        alert('clicked ' + $(this).attr('data-id'));
+                    });
+                }
+            });
+        }
+
+        function savedFilters() {
+            let query = {
+                page: 'startPage', 
+                command: 'getFilters'
+            }
+            $.ajax({
+                url: controller,
+                data: query,
+                type: 'post',
+                success: function(data) {
+                    let post_data = JSON.parse(data);
+                    // add the data to the form so it is remembered
+                    $('#search').val(post_data['search']);
+                    $('#group-by').val(post_data['order']);
+                    $('#experience').val(post_data['experience']);
+                }
+            });
+        }
+
+        // for if user would like to change the filters
+        $('#filter-form').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            var formData = new FormData(this);
+            
+            // Send the form data to the server using AJAX POST request
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData, // Send the FormData object directly
+                processData: false, // Prevent jQuery from processing the data
+                contentType: false, // Prevent jQuery from setting the Content-Type header
+                success: function(data) {
+                    // Handle the response data here
+                    addPosts();
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors here
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // have filters set when page refreshes
+        savedFilters();
+        // add posts when page is refreshed
+        addPosts();
+    </script>
 </html>
