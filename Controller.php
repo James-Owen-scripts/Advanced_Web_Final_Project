@@ -85,6 +85,11 @@
                 exit();
                 break;
 
+            case 'createPost':
+                createPost($_SESSION['username'], $_POST['postTitle'], $_POST['postContent']);
+                exit();
+                break;
+
             case 'applyFilters':
                 $_SESSION['experience'] = $_POST['experience'];
                 $_SESSION['order'] = $_POST['order'];

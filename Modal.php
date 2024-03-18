@@ -86,6 +86,16 @@
 
     // Function to create a post
     function createPost($u, $title, $content){
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['userPosts']['createPost'];
 
+        // replace with correct data
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        $sql = str_replace('[TITLE]', $title, $sql);
+        $sql = str_replace('[CONTENT]', $content, $sql);
+        $sql = str_replace('[DATE]', date("Ymd"), $sql);
+
+        mysqli_query($conn, $sql);
     }
 ?>
