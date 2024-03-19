@@ -98,4 +98,29 @@
 
         mysqli_query($conn, $sql);
     }
+
+    // function to get post and comments
+    function getFullPost($postId) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['userPosts']['getPost'];
+        $sql = str_replace('[POSTID]', $postId, $sql);
+
+        // get the post selected
+        $post = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+
+        // get comments
+        $sql = $JSON_DataBase_Info['userComments']['allPostComments'];
+        $sql = str_replace('[POSTID]', $postId, $sql);
+
+        $result = mysqli_query($conn, $sql);
+        $comments = [];
+        $i = 0;
+        while($row = mysqli_fetch_assoc($result)) {
+            $comments[$i++] = $row;
+        }
+
+        // return all data
+        return array('post' => $post, 'comments' => $comments);
+    }
 ?>

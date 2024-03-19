@@ -39,79 +39,139 @@
               </div>
             </div>
         </nav>
-        <div class="container" id="startPagePosts">
-            <div class="row">
-                <h1 style="text-align: center;">Posts</h1>
-                <button class="btn btn-primary w-50" style="position: relative; left: 40%; margin-bottom: 2em;" data-bs-toggle="modal" data-bs-target="#createPost">Create Post</button>
+        <div id="postsSegment" style="display: none;">
+            <div class="container" id="startPagePosts">
+                <div class="row">
+                    <h1 style="text-align: center;">Posts</h1>
+                    <button class="btn btn-primary w-50" style="position: relative; left: 40%; margin-bottom: 2em;" data-bs-toggle="modal" data-bs-target="#createPost">Create Post</button>
+                </div>
+                <form id="filter-form">
+                    <input type="hidden" name="page" value="startPage" />
+                    <input type="hidden" name="command" value="applyFilters" />
+                    <div class="row bg-secondary mt-10">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="search">search &#x1F50E;&#xFE0E;</label>
+                                <input class="form-control" type="text" id="search" name="search" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="group-by">Group-by:</label>
+                                <select class="form-control" id="group-by" name="order">
+                                    <option>Newest-To-Oldest</option>
+                                    <option>Oldest-To-Newest</option>
+                                    <option>Popularity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="experience">Experience:</label>
+                                <select class="form-control" id="experience" name="experience">
+                                    <option></option>
+                                    <option>Begginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Expert</option>
+                                    <option>Coach</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <button id="filter-submit" style="position: relative; top: 2em;" type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="posts"></div>
             </div>
-            <form id="filter-form">
-                <input type="hidden" name="page" value="startPage" />
-                <input type="hidden" name="command" value="applyFilters" />
-                <div class="row bg-secondary mt-10">
-                    <div class="col">
-                        <div class="mb-3">
-                            <label class="form-label" for="search">search &#x1F50E;&#xFE0E;</label>
-                            <input class="form-control" type="text" id="search" name="search" />
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-3">
-                            <label class="form-label" for="group-by">Group-by:</label>
-                            <select class="form-control" id="group-by" name="order">
-                                <option>Newest-To-Oldest</option>
-                                <option>Oldest-To-Newest</option>
-                                <option>Popularity</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-3">
-                            <label class="form-label" for="experience">Experience:</label>
-                            <select class="form-control" id="experience" name="experience">
-                                <option></option>
-                                <option>Begginner</option>
-                                <option>Intermediate</option>
-                                <option>Expert</option>
-                                <option>Coach</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <button id="filter-submit" style="position: relative; top: 2em;" type="submit" class="btn btn-primary">Submit</button>
+            
+            <!--Create post modal-->
+            <div class="modal fade" id="createPost">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="createPostForm">
+                            <div class="modal-header">
+                                <h2>Create Post</h2>
+                                <input type="hidden" name="page" value="startPage" />
+                                <input type="hidden" name="command" value="createPost"/>
+                            </div>
+                            <div class="modal-body">
+                                <label class="control-label" for="postTitle">Post Title:</label>
+                                <input type="text" class="form-control" id="postTitle" name="postTitle" required/>
+                                <label class="control-label" for="postContent">Content</label>
+                                <textarea class="form-control" id="postContent" name="postContent" rows="5" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" id="model-createPost-submit" class="btn btn-outline-primary">Submit</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-            <div id="posts"></div>
+            </div>
         </div>
-
-        <!--Create post modal-->
-        <div class="modal fade" id="createPost">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="createPostForm">
-                        <div class="modal-header">
-                            <h2>Create Post</h2>
-                            <input type="hidden" name="page" value="startPage" />
-                            <input type="hidden" name="command" value="createPost"/>
-                        </div>
-                        <div class="modal-body">
-                            <label class="control-label" for="postTitle">Post Title:</label>
-                            <input type="text" class="form-control" id="postTitle" name="postTitle" required/>
-                            <label class="control-label" for="postContent">Content</label>
-                            <textarea class="form-control" id="postContent" name="postContent" rows="5" required></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" id="model-createPost-submit" class="btn btn-outline-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div id="fullPostSegment" style="display: none;">
+        <h1>Hello From Posts page</h1>
+        </div>
+        <div id="profileSegment" style="display: none">
+            <h1>Hello from profile page</h1>
+        </div>
+        <div id="myPostsSegment" style="display: none;">
+            <h1>Hello from my posts segment</h1>
         </div>
     </body>
     <!--JQuery control for document-->
     <script>
         let controller = '../Controller.php';
+
+        // add page data
+        function pageData(pageOn) {
+            if (pageOn === 'posts') {
+                $('#fullPostSegment').css('display', 'none');
+                $('#postsSegment').css('display', 'block');
+                $('#profileSegment').css('display', 'none');
+                $('#myPostsSegment').css('display', 'none');
+                savedFilters();
+                // add posts when page is refreshed
+                addPosts();
+            }
+            else if (pageOn === 'seePost') {
+                $('#fullPostSegment').css('display', 'block');
+                $('#postsSegment').css('display', 'none');
+                $('#profileSegment').css('display', 'none');
+                $('#myPostsSegment').css('display', 'none');
+                loadPost();
+            }
+            else if (pageOn === 'profile') {
+                $('#fullPostSegment').css('display', 'none');
+                $('#postsSegment').css('display', 'none');
+                $('#profileSegment').css('display', 'block');
+                $('#myPostsSegment').css('display', 'none');
+            }
+            else if (pageOn === 'myPosts') {
+                $('#fullPostSegment').css('display', 'none');
+                $('#postsSegment').css('display', 'none');
+                $('#profileSegment').css('display', 'none');
+                $('#myPostsSegment').css('display', 'block');
+            }
+        }
+
+        // check which page should be shown
+        function checkPage() {
+            let query = {
+                page: 'startPage',
+                command: 'pageType'
+            }
+
+            $.ajax({
+                url: controller,
+                data: query,
+                type: 'POST',
+                success: (data) => {
+                    pageData(data);
+                }
+            });
+        }
 
         // function to log out user
         function logOut() {
@@ -124,28 +184,19 @@
             });
         }
 
-        // redirect to profile
-        function profile() {
+        // handle user navigation
+        function nav(dir) {
             let query = {
                 page: 'startPage',
-                command: 'profile'
+                command: 'nav',
+                directory: dir 
             };
-            $.post(controller, query, function(data) {
-                document.write(data);
+            $.post(controller, query, function() {
+                pageData(query.directory);
             });
         }
 
-        // redirect to my posts
-        function myPosts() {
-            let query = {
-                page: 'startPage',
-                command: 'myPosts'
-            };
-            $.post(controller, query, function(data) {
-                document.write(data);
-            });
-        }
-
+        // Posts Page Functions:
         function addPosts() {
             $.ajax({url: controller,
                 data: {page:'startPage', command: 'getPosts'},
@@ -218,7 +269,7 @@
                     // add event listeners for clicking
                     $('div[data-id]').click(function() {
                         // TODO: make click take user to next page
-                        alert('clicked ' + $(this).attr('data-id'));
+                        postSelect($(this).attr('data-id'));
                     });
                 }
             });
@@ -239,6 +290,24 @@
                     $('#search').val(post_data['search']);
                     $('#group-by').val(post_data['order']);
                     $('#experience').val(post_data['experience']);
+                }
+            });
+        }
+
+        // redirect to full selected posts
+        function postSelect(post_id) {
+            let query = {
+                page: 'startPage',
+                command: 'seePost',
+                post: post_id
+            };
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: query,
+                success: function(data) {
+                    location.reload();
                 }
             });
         }
@@ -287,15 +356,34 @@
             });
         });
 
+
+
+        // seePost functions
+        // load post
+        function loadPost() {
+            let query = {
+                page: 'startPage',
+                command: 'getPost'
+            }
+            $.ajax({
+                url: controller,
+                data: query,
+                type: 'POST',
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
         //handle logout click
         $('#logOutNav').click(logOut);
         // handle profile click
-        $('#profileNav').click(profile);
+        $('#profileNav').click(() => {nav('profile');});
         // handle my posts click
-        $('#myPostsNav').click(myPosts);
-        // have filters set when page refreshes
-        savedFilters();
-        // add posts when page is refreshed
-        addPosts();
+        $('#myPostsNav').click(() => {nav('myPosts')});
+        // handle if logo is clicked
+        $('#logo').click(() => {nav('posts')});
+        // check the page
+        checkPage();
     </script>
 </html>

@@ -35,6 +35,7 @@
                     session_start();
                     $_SESSION['signed'] = 'YES';
                     $_SESSION['username'] = $_POST['username'];
+                    $_SESSION['pageOn'] = 'posts';
                     // set filters for search
                     $_SESSION['experience'] = '';
                     $_SESSION['order'] = 'Newest-To-Oldest';
@@ -65,15 +66,16 @@
                 exit();
                 break;
 
-            case 'profile':
-                include('HTML_Pages/Profile_Page.html');
+            case 'nav':
+                $_SESSION['pageOn'] = $_POST['directory'];
                 exit();
                 break;
 
-            case 'myPosts':
-                include('HTML_Pages/myPosts_Page.html');
+            case 'seePost':
+                $_SESSION['pageOn'] = 'seePost';
+                $_SESSION['post'] = $_POST['post'];
+                echo $_SESSION['pageOn'];
                 exit();
-                break;
 
             case 'getPosts':
                 echo json_encode(getFilteredPosts($_SESSION['search'], $_SESSION['experience'], $_SESSION['order']));
@@ -82,6 +84,16 @@
 
             case 'getFilters':
                 echo json_encode($_SESSION);
+                exit();
+                break;
+
+                case 'getPost':
+                    echo json_encode(getFullPost($_SESSION['post']));
+                    exit();
+                    break;
+
+            case 'pageType':
+                echo $_SESSION['pageOn'];
                 exit();
                 break;
 
