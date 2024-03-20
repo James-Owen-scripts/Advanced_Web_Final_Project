@@ -197,6 +197,7 @@
                 $('#postsSegment').css('display', 'none');
                 $('#profileSegment').css('display', 'none');
                 $('#myPostsSegment').css('display', 'block');
+                showMyPosts();
             }
         }
 
@@ -256,23 +257,23 @@
                         }
                         str += '<div class="row mt-3">';
                         // add the card
-                        str += '<div class="col-12"><div class="card mt-3 bg-info" data-id="' + post_data[i]['POST_ID'] + '"">';
+                        str += '<div class="col-12"><div class="card mt-3 bg-light" data-id="' + post_data[i]['POST_ID'] + '"">';
                         // card header with username
                         str += '<div class="card-header"><h3>' + post_data[i]['USERNAME'] + '</h3>';
                         // check if user has experience
                         if (post_data[i]['LIFT_EXPERIENCE'] !== null) {
-                            str += '<p style="color: red;">Experience: ' + post_data[i]['LIFT_EXPERIENCE'] + '</p>';
+                            str += '<p>Experience: ' + post_data[i]['LIFT_EXPERIENCE'] + '</p>';
                         }
                         else {
-                            str += '<p style="color: red;">Experience: NOT SET </p>';
+                            str += '<p>Experience: none </p>';
                         }
-                        str += '<p style="color: grey;">';
+                        str += '<p>';
                         // CHECK IF USER HAS SET A SQUAT TOTAL
                         if (post_data[i]['SQUAT_TOTAL'] !== null ) {
                             str += 'Totals: ( SQ-' + post_data[i]['SQUAT_TOTAL'] + 'Kg | ';
                         }
                         else {
-                            str += 'Totals: (SQ-NA | ';
+                            str += 'Totals: ( SQ-NA | ';
                         }
                         // CHECK IF USER HAS SET A bench TOTAL
                         if (post_data[i]['BENCH_TOTAL'] !== null ) {
@@ -286,12 +287,12 @@
                             str += 'DL-' + post_data[i]['SQUAT_TOTAL'] + 'Kg )</p>';
                         }
                         else {
-                            str += 'DL-NA)</p>';
+                            str += 'DL-NA )</p>';
                         }
                         // end head and add card body
                         str += '</div><div class="card-body"><h2>' + post_data[i]['POST_TITLE'] + '</h2></div>';
                         // footer of the card
-                        str += '<div class="card-footer"><p>Date posted: ' + post_data[i]['DATE_POSTED'] + '</p></div></div></div>';
+                        str += '<div class="card-footer"><p style="color: grey;">Date posted: ' + post_data[i]['DATE_POSTED'] + '</p></div></div></div>';
                         // add div end when the end of the posts has been reached
                         if (i === post_data.length -1) {
                             str += '</div>';
@@ -302,17 +303,16 @@
                     // make posts dynamic hoverable
                     $('div[data-id]').hover(
                         function() {
-                            $(this).removeClass("bg-info").addClass("bg-warning");
+                            $(this).removeClass("bg-light").addClass("bg-info");
                             $(this).css('cursor', 'pointer');
                         },
                         function() {
-                            $(this).removeClass("bg-warning").addClass("bg-info");
+                            $(this).removeClass("bg-info").addClass("bg-light");
                         }
                     );
                     
                     // add event listeners for clicking
                     $('div[data-id]').click(function() {
-                        // TODO: make click take user to next page
                         postSelect($(this).attr('data-id'));
                     });
                 }
@@ -454,7 +454,7 @@
                     str += '<div id="comments">';
                     data['comments'].forEach((comment) => {
                         // comment head
-                        str += '<div class="card bg-warning mb-2"><div class="card-header"><h3>User: ';
+                        str += '<div class="card bg-light mb-2"><div class="card-header"><h3>User: ';
                         str += comment['USERNAME'] + '</h3>';
                         if (comment['EXPERIENCE'] == null) {
                         str += '<p>Experience: none</p>';
@@ -512,10 +512,106 @@
                 success: () => {
                     $('textarea#comment').val('');
                     loadPost();
-                    alert('Commented on Post');
                 }
             })
         });
+
+
+        // My Posts functions
+        //  Delete post
+        function deletePost(postId) {
+            console.log(postId);
+            let query = {
+                page: 'startPage',
+                command: 'deletePost',
+                postID: postId
+            };
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: query,
+                success: (data) => {
+                    console.log(data);
+                    showMyPosts();
+                }
+            });
+        }
+
+        //  show my posts function
+        function showMyPosts() {
+            let query = {
+                page: 'startPage',
+                command: 'myPosts'
+            };
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: query,
+                success: (data) => {
+                    data = JSON.parse(data);
+                    let str = '';
+
+                    // add each of the user posts
+                    data.forEach((post) => {
+                        // post header
+                        str += '<div class="card bg-light mb-2"><div class="card-header">';
+                        str += '<h2>' + post['USERNAME'] + '</h2>';
+                        if (post['EXPERIENCE'] === null) {
+                            str += '<p>Experience: none</p>'; 
+                        }
+                        else {
+                            str += '<p>Experience: ' + post['EXPEREINCE'] + '</p>';
+                        }
+                        if (post['SQUAT_TOTAL'] === null) {
+                            str += '<p>Totals: ( SQ-NA | '; 
+                        }
+                        else {
+                            str += str += '<p>Totals: ( SQ-' + post['SQUAT_TOTAL'] + 'Kg | ';
+                        }
+                        if (post['BENCH_TOTAL'] === null) {
+                            str += 'BP-NA | '; 
+                        }
+                        else {
+                            str += str += 'BP-' + post['BENCH_TOTAL'] + 'Kg | ';
+                        }
+                        if (post['DEADLIFT_TOTAL'] === null) {
+                            str += 'DL-NA )'; 
+                        }
+                        else {
+                            str += str += 'DL-' + post['DEADLIFT_TOTAL'] + 'Kg )</p>';
+                        }
+                        // adding buttons
+                        str += '<div id=addButtons>';
+                        str += '<button type="button" view-mypost-com-id="' + post['POST_ID'] + '" class="btn btn-outline-primary">View Comments</button>';
+                        str += '<button type="button" delete-mypost-id="' + post['POST_ID'] + '" class="btn btn-outline-danger">Delete post</button></div>';
+                        str += '</div>';
+
+                        // body of post
+                        str += '<div class="card-body"><h3>' + post['POST_TITLE'] + '</h3></div>';
+
+                        // footer of post
+                        str += '<div class="card-footer"><p style="color: grey;">' + post['DATE_POSTED'] + '</p></div>';
+
+                        // end of post
+                        str += '</div>';
+                    });
+
+                    // add posts to the page
+                    $('#myPosts').html(str);
+
+                    // add event listener to view post
+                    $('button[view-mypost-com-id]').click(function() {
+                        postSelect($(this).attr('view-mypost-com-id'));
+                    });
+                    // add event listener to delete post
+                    $('button[delete-mypost-id]').click(function() {
+                        deletePost($(this).attr('delete-mypost-id'));
+                    });
+                }
+            })
+        }
 
         //handle logout click
         $('#logOutNav').click(logOut);

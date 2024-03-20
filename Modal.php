@@ -138,4 +138,37 @@
 
         mysqli_query($conn, $sql);
     }
+
+    // function to show user specific posts
+    function showMyPosts($u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['userPosts']['getMyPosts'];
+        $sql = str_replace('[USERNAME]', $u, $sql);
+
+        $result = mysqli_query($conn, $sql);
+        $myPosts = [];
+        $i = 0;
+        while($row = mysqli_fetch_assoc($result)) {
+            $myPosts[$i++] = $row;
+        }
+
+        return $myPosts;
+    }
+
+    // function to delete posts
+    function deletePost($postId) {
+        global $conn;
+        global $JSON_DataBase_Info;
+
+        // delete comments on post
+        $sql = $JSON_DataBase_Info['userComments']['deleteCommentsByPostId'];
+        $sql = str_replace('[POSTID]', $postId, $sql);
+        mysqli_query($conn, $sql);
+
+        // delete post
+        $sql = $JSON_DataBase_Info['userPosts']['deletePostByPostId'];
+        $sql = str_replace('[POSTID]', $postId, $sql);
+        mysqli_query($conn, $sql);
+    }
 ?>

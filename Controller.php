@@ -115,10 +115,13 @@
                 break;
 
             case 'deletePost':
+                deletePost($_POST['postID']);
+                echo 'deleted';
                 exit();
                 break;
 
             case 'myPosts':
+                echo json_encode(showMyPosts($_SESSION['username']));
                 exit();
                 break;
                 
