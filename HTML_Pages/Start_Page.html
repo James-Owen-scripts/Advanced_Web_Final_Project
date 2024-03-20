@@ -111,13 +111,57 @@
             </div>
         </div>
         <div id="fullPostSegment" style="display: none;">
-        <h1>Hello From Posts page</h1>
+            <div class="container bg-light">
+                <h1>Post</h1>
+                <div class="row">
+                    <div class="col-12" id="postSection">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <form id="makeComment">
+                            <div class="mb-3 mt-3">
+                                <label for="comment" class="form-label">Comment on Post:</label>
+                                <textarea id="comment" name="comment" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary mb-2" id="commentBtn">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="profileSegment" style="display: none">
             <h1>Hello from profile page</h1>
         </div>
         <div id="myPostsSegment" style="display: none;">
-            <h1>Hello from my posts segment</h1>
+            <div class="container bg-light">
+                <h1>My Posts:</h1>
+                <div id="myPosts">
+                    <div class="card bg-info mb-2">
+                        <div class="card-header">
+                            <h2>Username</h2>
+                            <h3>Experience</h3>
+                            <h3>Totals</h3>
+                            <button type="button" view-mypost-com-id="1" class="btn btn-outline-primary">View Comments</button>
+                            <button type="button" delete-mypost-id="1" class="btn btn-outline-danger">Delete post</button>
+                        </div>
+                        <div class="card-body">
+                            <h3>Post Title</h3>
+                        </div>
+                        <div class="card-footer">
+                            <p style="color: grey;">Date posted</p>
+                        </div>
+                    </div>
+                    <div class="card bg-info mb-2">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">Body</div>
+                        <div class="card-footer">footer</div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <p>End of my post content</p>
+                </div>
+            </div>
         </div>
     </body>
     <!--JQuery control for document-->
@@ -370,10 +414,108 @@
                 data: query,
                 type: 'POST',
                 success: function(data) {
-                    console.log(data);
+                    data = JSON.parse(data);
+                    
+                    // head of post
+                    let str = '<div class="card bg-info mt-2 mb-2"><div class="card-header"><h2>By: ';
+                    str += data['post']['USERNAME'] + '</h2><h3>' + data['post']['POST_TITLE'] + '</h3>';
+                    if (data['post']['EXPERIENCE'] == null) {
+                        str += '<h4>Experience: none</h4>';
+                    }
+                    else {
+                        str += '<h4>Experience: ' + data['post']['EXPERIENCE'] + '</h4>';
+                    }
+                    if (data['post']['SQUAT_TOTAL'] == null) {
+                        str += '<h4>Totals: ( SQ-NA | ';
+                    }
+                    else {
+                        str += '<h4>Totals: ( SQ-' + data['post']['SQUAT_TOTAL'] + 'Kg | ';
+                    }
+                    if (data['post']['BENCH_TOTAL'] == null) {
+                        str += 'BP-NA | ';
+                    }
+                    else {
+                        str += 'BP-' + data['post']['BENCH_TOTAL'] + 'Kg | ';
+                    }
+                    if (data['post']['DEADLIFT_TOTAL'] == null) {
+                        str += 'DL-NA )</h4></div>';
+                    }
+                    else {
+                        str += 'DL-' + data['post']['DEADLIFT_TOTAL'] + 'Kg )</h4></div>';
+                    }
+
+                    // post body
+                    str += '<div class="card-body"><p>' + data['post']['POST_CONTENT'] + '</p></div>';
+
+                    // post footer
+                    str += '<div class="card-footer"><p style="color: grey;">Posted on: ' + data['post']['DATE_POSTED'] + '</p>';
+                    
+                    //  comments in footer
+                    str += '<div id="comments">';
+                    data['comments'].forEach((comment) => {
+                        // comment head
+                        str += '<div class="card bg-warning mb-2"><div class="card-header"><h3>User: ';
+                        str += comment['USERNAME'] + '</h3>';
+                        if (comment['EXPERIENCE'] == null) {
+                        str += '<p>Experience: none</p>';
+                        }
+                        else {
+                            str += '<p>Experience: ' + comment['EXPERIENCE'] + '</p>';
+                        }
+                        if (comment['SQUAT_TOTAL'] == null) {
+                            str += '<p>Totals: ( SQ-NA | ';
+                        }
+                        else {
+                            str += '<p>Totals: ( SQ-' + comment['SQUAT_TOTAL'] + 'Kg | ';
+                        }
+                        if (comment['BENCH_TOTAL'] == null) {
+                            str += 'BP-NA | ';
+                        }
+                        else {
+                            str += 'BP-' + comment['BENCH_TOTAL'] + 'Kg | ';
+                        }
+                        if (comment['DEADLIFT_TOTAL'] == null) {
+                            str += 'DL-NA )</p></div>';
+                        }
+                        else {
+                            str += 'DL-' + comment['DEADLIFT_TOTAL'] + 'Kg )</p></div>';
+                        }
+
+                        // comment body
+                        str += '<div class="card-body"><p>' + comment['POST_COMMENT'] + '</p></div>';
+
+                        // comment footer
+                        str += '<div class="card-footer"><p style="color: grey;">' + comment['DATE_COMMENTED'] + '</p></div></div>';
+                    });
+                    str += '</div></div>';
+
+                    $('#postSection').html(str);
                 }
             });
         }
+
+        // comment on post
+        $('#makeComment').submit(function(event) {
+            event.preventDefault();
+            let commentContent = $('textarea#comment').val();
+
+            let query = {
+                page: 'startPage',
+                command: 'commentOnPost',
+                comment: commentContent
+            };
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: query,
+                success: () => {
+                    $('textarea#comment').val('');
+                    loadPost();
+                    alert('Commented on Post');
+                }
+            })
+        });
 
         //handle logout click
         $('#logOutNav').click(logOut);

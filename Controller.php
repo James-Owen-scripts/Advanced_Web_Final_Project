@@ -87,10 +87,10 @@
                 exit();
                 break;
 
-                case 'getPost':
-                    echo json_encode(getFullPost($_SESSION['post']));
-                    exit();
-                    break;
+            case 'getPost':
+                echo json_encode(getFullPost($_SESSION['post']));
+                exit();
+                break;
 
             case 'pageType':
                 echo $_SESSION['pageOn'];
@@ -102,10 +102,23 @@
                 exit();
                 break;
 
+            case 'commentOnPost':
+                createComment($_SESSION['username'], $_SESSION['post'], $_POST['comment']);
+                exit();
+                break;
+
             case 'applyFilters':
                 $_SESSION['experience'] = $_POST['experience'];
                 $_SESSION['order'] = $_POST['order'];
                 $_SESSION['search'] = $_POST['search'];
+                exit();
+                break;
+
+            case 'deletePost':
+                exit();
+                break;
+
+            case 'myPosts':
                 exit();
                 break;
                 

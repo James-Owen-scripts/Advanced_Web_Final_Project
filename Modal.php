@@ -123,4 +123,19 @@
         // return all data
         return array('post' => $post, 'comments' => $comments);
     }
+
+    // function to create a comment on a post
+    function createComment($u, $postId, $comment) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $date = date("Ymd");
+
+        $sql = $JSON_DataBase_Info['userComments']['insertAComment'];
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        $sql = str_replace('[POSTID]', $postId, $sql);
+        $sql = str_replace('[COMMENT]', $comment, $sql);
+        $sql = str_replace('[DATE]', $date, $sql);
+
+        mysqli_query($conn, $sql);
+    }
 ?>
