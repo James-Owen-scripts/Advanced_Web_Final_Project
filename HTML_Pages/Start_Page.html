@@ -620,11 +620,11 @@
                         // comment head
                         str += '<div class="card bg-light mb-2"><div class="card-header"><h3>User: ';
                         str += comment['USERNAME'] + '</h3>';
-                        if (comment['EXPERIENCE'] == null) {
+                        if (comment['LIFT_EXPERIENCE'] == null) {
                         str += '<p>Experience: none</p>';
                         }
                         else {
-                            str += '<p>Experience: ' + comment['EXPERIENCE'] + '</p>';
+                            str += '<p>Experience: ' + comment['LIFT_EXPERIENCE'] + '</p>';
                         }
                         if (comment['SQUAT_TOTAL'] == null) {
                             str += '<p>Totals: ( SQ-NA | ';
