@@ -6,12 +6,12 @@
         <title>Powerlifting Discussion Forum</title>
         <link rel="shortcut icon" href="../Resources/Images/logo.ico" />
     
+        <!--JQuery-->
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+
         <!--Bootstrap-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-        <!--JQuery-->
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
     
         <!--Style Sheet-->
         <link href="../Styles/OverallStyles.css" rel="stylesheet" />
@@ -131,7 +131,190 @@
             </div>
         </div>
         <div id="profileSegment" style="display: none">
-            <h1>Hello from profile page</h1>
+            <div class="container bg-light">
+                <div id="alterProfile"></div>
+            </div>
+            <div id="modals">
+                <div class="modal fade" id="changeExperienceModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="experienceForm">
+                                <div class="modal-header">
+                                    <h2>Change Experience</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeExperience" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="experienceOptions" class='form-label'>Select a Experience Level:</label>
+                                    <select class="form-control" id="experienceOptions" name="experience">
+                                        <option></option>
+                                        <option>Begginner</option>
+                                        <option>Intermediate</option>
+                                        <option>Expert</option>
+                                        <option>Coach</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changeSquatModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="squatForm">
+                                <div class="modal-header">
+                                    <h2>Change Squat Total</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeSquatMax" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="squatIn" class="form-label">Enter Squat Max (Between: 0-5000Kg):</label>
+                                    <input type="text" class="form-control" id="squatIn" name="squatIn" pattern="(?:0|[1-9]\d{0,3}|5000)" required /> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changeBenchModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="benchForm">
+                                <div class="modal-header">
+                                    <h2>Change Bench Total</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeBenchMax" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="benchIn" class="form-label">Enter Bench Max (Between: 0-5000Kg):</label>
+                                    <input type="text" class="form-control" id="benchIn" name="benchIn" pattern="(?:0|[1-9]\d{0,3}|5000)" required />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changeDeadliftModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="deadliftForm">
+                                <div class="modal-header">
+                                    <h2>Change Deadlift Total</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeDeadMax" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="deadIn" class="form-label">Enter Deadlift Max (Between: 0-5000Kg):</label>
+                                    <input type="text" class="form-control" id="deadIn" name="deadIn" pattern="(?:0|[1-9]\d{0,3}|5000)" required />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changeUsernameModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="changeUsernameForm">
+                                <div class="modal-header">
+                                    <h2>Change Username</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeUsername" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="usernameIn" class="form-label">Enter New Username:</label><span class="text-bg-danger" id="bad-username"></span>
+                                    <input type="text" class="form-control" id="usernameIn" name="usernameIn" required />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changeEmailModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="changeEmailForm">
+                                <div class="modal-header">
+                                    <h2>Change Email</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changeEmail" />
+                                </div>
+                                <div class="modal-body">
+                                    <label for="emailIn" class="form-label">Enter New Email:</label><span class="text-bg-danger" id="bad-email"></span>
+                                    <input type="email" class="form-control" id="emailIn" name="emailIn"  required />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="changePasswordModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="changePasswordForm">
+                                <div class="modal-header">
+                                    <h2>Change Password</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="changePassword" />
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3 mt-3 col-12">
+                                        <label for="passwordOld" class="form-label">Enter Old Password:</label><span class="text-bg-danger" id="bad-password"></span>
+                                        <input type="password" class="form-control" id="passwordOld" name="passwordOld" placeholder="Enter old password" required />
+                                    </div>
+                                    <div class="mb-3 mt-3 col-12">
+                                        <label for="passwordIn" class="form-label">Enter New Password<br>(at least 8 characters max 12. 1 special character. 1 number, and 1 letter)</label>
+                                        <input type="password" class="form-control" id="passwordIn" name="passwordIn" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}" placeholder="Enter new password" required />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit Change</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="deleteAccountModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="deleteAccountForm">
+                                <div class="modal-header">
+                                    <h2>Delete Account</h2>
+                                    <input type="hidden" name="page" value="startPage" />
+                                    <input type="hidden" name="command" value="deleteAccount" />
+                                </div>
+                                <div class="modal-body">
+                                    <h3>Are you sure you would like to delete your account?</h3>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="myPostsSegment" style="display: none;">
             <div class="container bg-light">
@@ -191,6 +374,7 @@
                 $('#postsSegment').css('display', 'none');
                 $('#profileSegment').css('display', 'block');
                 $('#myPostsSegment').css('display', 'none');
+                profileData();
             }
             else if (pageOn === 'myPosts') {
                 $('#fullPostSegment').css('display', 'none');
@@ -277,14 +461,14 @@
                         }
                         // CHECK IF USER HAS SET A bench TOTAL
                         if (post_data[i]['BENCH_TOTAL'] !== null ) {
-                            str += 'BP-NA|' + post_data[i]['BENCH_TOTAL'] + 'Kg | ';
+                            str += 'BP-' + post_data[i]['BENCH_TOTAL'] + 'Kg | ';
                         }
                         else {
                             str += 'BP-NA | ';
                         }
                         // CHECK IF USER HAS SET A SQUAT TOTAL
                         if (post_data[i]['DEADLIFT_TOTAL'] !== null ) {
-                            str += 'DL-' + post_data[i]['SQUAT_TOTAL'] + 'Kg )</p>';
+                            str += 'DL-' + post_data[i]['DEADLIFT_TOTAL'] + 'Kg )</p>';
                         }
                         else {
                             str += 'DL-NA )</p>';
@@ -350,8 +534,8 @@
                 url: controller,
                 type: 'POST',
                 data: query,
-                success: function(data) {
-                    location.reload();
+                success: function() {
+                    pageData(query.command);
                 }
             });
         }
@@ -366,9 +550,9 @@
             $.ajax({
                 url: controller,
                 type: 'POST',
-                data: formData, // Send the FormData object directly
-                processData: false, // Prevent jQuery from processing the data
-                contentType: false, // Prevent jQuery from setting the Content-Type header
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(data) {
                     // Handle the response data here
                     addPosts();
@@ -419,11 +603,11 @@
                     // head of post
                     let str = '<div class="card bg-info mt-2 mb-2"><div class="card-header"><h2>By: ';
                     str += data['post']['USERNAME'] + '</h2><h3>' + data['post']['POST_TITLE'] + '</h3>';
-                    if (data['post']['EXPERIENCE'] == null) {
+                    if (data['post']['LIFT_EXPERIENCE'] == null) {
                         str += '<h4>Experience: none</h4>';
                     }
                     else {
-                        str += '<h4>Experience: ' + data['post']['EXPERIENCE'] + '</h4>';
+                        str += '<h4>Experience: ' + data['post']['LIFT_EXPERIENCE'] + '</h4>';
                     }
                     if (data['post']['SQUAT_TOTAL'] == null) {
                         str += '<h4>Totals: ( SQ-NA | ';
@@ -520,7 +704,6 @@
         // My Posts functions
         //  Delete post
         function deletePost(postId) {
-            console.log(postId);
             let query = {
                 page: 'startPage',
                 command: 'deletePost',
@@ -532,7 +715,6 @@
                 type: 'POST',
                 data: query,
                 success: (data) => {
-                    console.log(data);
                     showMyPosts();
                 }
             });
@@ -558,29 +740,29 @@
                         // post header
                         str += '<div class="card bg-light mb-2"><div class="card-header">';
                         str += '<h2>' + post['USERNAME'] + '</h2>';
-                        if (post['EXPERIENCE'] === null) {
+                        if (post['LIFT_EXPERIENCE'] === null) {
                             str += '<p>Experience: none</p>'; 
                         }
                         else {
-                            str += '<p>Experience: ' + post['EXPEREINCE'] + '</p>';
+                            str += '<p>Experience: ' + post['LIFT_EXPERIENCE'] + '</p>';
                         }
                         if (post['SQUAT_TOTAL'] === null) {
                             str += '<p>Totals: ( SQ-NA | '; 
                         }
                         else {
-                            str += str += '<p>Totals: ( SQ-' + post['SQUAT_TOTAL'] + 'Kg | ';
+                            str += '<p>Totals: ( SQ-' + post['SQUAT_TOTAL'] + 'Kg | ';
                         }
                         if (post['BENCH_TOTAL'] === null) {
                             str += 'BP-NA | '; 
                         }
                         else {
-                            str += str += 'BP-' + post['BENCH_TOTAL'] + 'Kg | ';
+                            str += 'BP-' + post['BENCH_TOTAL'] + 'Kg | ';
                         }
                         if (post['DEADLIFT_TOTAL'] === null) {
-                            str += 'DL-NA )'; 
+                            str += 'DL-NA )</p>'; 
                         }
                         else {
-                            str += str += 'DL-' + post['DEADLIFT_TOTAL'] + 'Kg )</p>';
+                            str += 'DL-' + post['DEADLIFT_TOTAL'] + 'Kg )</p>';
                         }
                         // adding buttons
                         str += '<div id=addButtons>';
@@ -611,6 +793,283 @@
                     });
                 }
             })
+        }
+
+        // Profile functions
+        //  function to get profile data
+        function profileData() {
+            let query = {
+                page: 'startPage',
+                command: 'myProfile'
+            };
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: query,
+                success: (data) => {
+                    data = JSON.parse(data);
+
+                    // add username to page
+                    let str = '<div class="row"><div class="col-12">';
+                    str += '<h1>Profile for: ' + data['USERNAME'] + '</h1>';
+                    str += '</div></div>';
+
+                    // user experience
+                    str += '<div class="mt-3 mb-5">';
+                    if (data['LIFT_EXPERIENCE'] == null) {
+                        str += '<p>Experience: not set</p>';
+                    }
+                    else {
+                        str += '<p>Experience: ' + data['LIFT_EXPERIENCE'] + '</p>';
+                    }
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeExperienceModal">Change Experience</button>';
+                    str += '</div>';
+
+                    // user max Squat
+                    str += '<div class="mt-3 mb-5">';
+                    if (data['SQUAT_TOTAL'] == null) {
+                        str += '<p>Max Squat: not set</p>';
+                    }
+                    else {
+                        str += '<p>Max Squat: ' + data['SQUAT_TOTAL'] + 'Kg</p>';
+                    }
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeSquatModal">Change Max Squat</button>';
+                    str += '</div>';
+
+                    // user max bench press
+                    str += '<div class="mt-3 mb-5">';
+                    if (data['BENCH_TOTAL'] == null) {
+                        str += '<p>Max BenchPress: not set</p>';
+                    }
+                    else {
+                        str += '<p>Max BenchPress: ' + data['BENCH_TOTAL'] + 'Kg</p>';
+                    }
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeBenchModal">Change Max Bench</button>';
+                    str += '</div>';
+
+                    // user max deadlift
+                    str += '<div class="mt-3 mb-5">';
+                    if (data['DEADLIFT_TOTAL'] == null) {
+                        str += '<p>Max Deadlift: not set</p>';
+                    }
+                    else {
+                        str += '<p>Max Deadlift: ' + data['DEADLIFT_TOTAL'] + 'Kg</p>';
+                    }
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeDeadliftModal">Change Max Deadlift</button>';
+                    str += '</div>';
+
+                    // username
+                    str += '<div class="mt-3 mb-5">';
+                    str += '<p>Username: ' + data['USERNAME'] + '</p>';
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeUsernameModal">Change Username</button>';
+                    str += '</div>';
+
+                    // Email
+                    str += '<div class="mt-3 mb-5">';
+                    str += '<p>Email: ' + data['EMAIL'] + '</p>';
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changeEmailModal">Change Email</button>';
+                    str += '</div>';
+
+                    // Password
+                    str += '<div class="mt-3 mb-5">';
+                    str += '<p>Change Password: </p>';
+                    str += '<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>';
+                    str += '</div>';
+
+                    // delete account
+                    str += '<div class="mt-3 mb-5">';
+                    str += '<p>Delete Account:</p>';
+                    str += '<button type="button" class="btn btn-outline-danger mb-4" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</button>';
+                    str += '</div>';
+                    
+                    // add to page
+                    $('#alterProfile').html(str);
+                }
+            });
+        }
+
+        // submit experience change
+        $('#experienceForm').submit(function (event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: () => {
+                    $('#changeExperienceModal').modal('hide');
+                    profileData();
+                }
+            });
+        });
+
+        // submit squat max change
+        $('#squatForm').submit( function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: () => {
+                    $('#changeSquatModal').modal('hide');
+                    profileData();
+                }
+            });
+        });
+
+        // submit bench max change
+        $('#benchForm').submit(function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false, 
+                success: () => {
+                    $('#changeBenchModal').modal('hide');
+                    profileData();
+                }
+            });
+        });
+
+        // submit deadlift max change
+        $('#deadliftForm').submit(function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: () => {
+                    $('#changeDeadliftModal').modal('hide');
+                    profileData();
+                }
+            });
+        });
+
+        // submit username change
+        $('#changeUsernameForm').submit(function(event) {
+            event.preventDefault();
+            $('#bad-username').html('');
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: (data) => {
+                    if (data === 'usernameChanged') {
+                        $('#changeUsernameModal').modal('hide');
+                        profileData();
+                    }
+                    else {
+                        $('#bad-username').html('*   Username already exists.');
+                    }
+                }
+            });
+        });
+
+        // submit email change
+        $('#changeEmailForm').submit(function(event) {
+            event.preventDefault();
+            $('#bad-email').html('');
+
+            formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: (data) => {
+                    if(data === 'emailChanged') {
+                        $('#changeEmailModal').modal('hide');
+                        profileData();
+                    }
+                    else {
+                        $('#bad-email').html('* Email already exists');
+                    }
+                }
+            });
+        });
+
+        // submit password change
+        $('#changePasswordForm').submit(function(event) {
+            event.preventDefault();
+            $('#bad-password').html('');
+
+            formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: (data) => {
+                    if (data === 'passwordChanged') {
+                        $('#changePasswordModal').modal('hide');
+                        profileData();
+                        alert('Password Changed');
+                    }
+                    else {
+                        $('#bad-password').html('*  Incorrect Old Password');
+                    }
+                }
+            });
+        });
+
+        $('#deleteAccountForm').submit(function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: controller,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: () => {
+                    logOut();
+                }
+            });
+        });
+
+        // set up system timeout
+        let timer = setTimeout(timeout, 60 * 5000);
+
+        // reset timeout when user is active
+        $(window).mousemove(reset_timeout);
+        $(window).keydown(reset_timeout);
+
+        function reset_timeout() {
+            clearTimeout(timer);
+            timer = setTimeout(timeout, 60 * 5000);
+        }
+
+        function timeout() {
+            $(window).off();
+            logOut();
         }
 
         //handle logout click

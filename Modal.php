@@ -74,6 +74,7 @@
         }
         else {
             $sql = str_replace('[EXPERIENCE]', $JSON_DataBase_Info['userPosts']['getFilteredPosts']['experience'], $sql);
+            $sql = str_replace('[EXPERIENCE]', $experience, $sql);
         }
         $result = mysqli_query($conn, $sql);
         $rows = [];
@@ -170,5 +171,165 @@
         $sql = $JSON_DataBase_Info['userPosts']['deletePostByPostId'];
         $sql = str_replace('[POSTID]', $postId, $sql);
         mysqli_query($conn, $sql);
+    }
+
+    // function to get user profile data
+    function profileData($u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['profileData'];
+        $sql = str_replace('[USERNAME]', $u, $sql);
+
+        $result = mysqli_query($conn, $sql);
+        return mysqli_fetch_assoc($result);
+    }
+
+    // function to update experience
+    function updateExpereince($experience, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['updateExperience'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace experience
+        $sql = str_replace('[EXPERIENCE]', $experience, $sql);
+
+        mysqli_query($conn, $sql);
+    }
+
+    // function to update squat
+    function updateSquat($squat, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['updateSquat'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace squat
+        $sql = str_replace('[MAXSQUAT]', $squat, $sql);
+
+        mysqli_query($conn, $sql);
+    }
+
+    // function to update Bench
+    function updateBench($bench, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['updateBench'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace bench
+        $sql = str_replace('[MAXBENCH]', $bench, $sql);
+
+        mysqli_query($conn, $sql);
+    }
+
+    // function to update Deadlift
+    function updateDeadlift($dl, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['updateDeadlift'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace deadlift
+        $sql = str_replace('[MAXDEAD]', $dl, $sql);
+
+        mysqli_query($conn, $sql);
+    }
+
+    // function to update Username
+    function updateUsername($newU, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        // check if user is valid
+        $sql = $JSON_DataBase_Info['validationQueries']['username'];
+        $sql = str_replace('[USERNAME]', $newU, $sql);
+        
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) > 0) {
+            return false;
+        }
+        $sql = $JSON_DataBase_Info['profile']['updateUsername'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        $sql = str_replace('[NEW_USERNAME]', $newU, $sql);
+
+        mysqli_query($conn, $sql);
+        return true;
+    }
+
+    // function to update Email
+    function updateEmail($e, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        // check if email exists
+        $sql = $JSON_DataBase_Info['validationQueries']['email'];
+        $sql = str_replace('[EMAIL]', $e, $sql);
+        
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) > 0) {
+            return false;
+        }
+        // replace email
+        $sql = $JSON_DataBase_Info['profile']['updateEmail'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace email
+        $sql = str_replace('[EMAIL]', $e, $sql);
+
+        mysqli_query($conn, $sql);
+        return true;
+    }
+
+    // function to update password
+    function updatePassword($pNew, $pOld, $u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        // check if old password is correct
+        $sql = $JSON_DataBase_Info['validationQueries']['login'];
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        $sql = str_replace('[PASSWORD]', $pOld, $sql);
+
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) == 0) {
+            return true;
+        }
+
+        // upsate password
+        $sql = $JSON_DataBase_Info['profile']['updatePassword'];
+        // replace username
+        $sql = str_replace('[USERNAME]', $u, $sql);
+        // replace password
+        $sql = str_replace('[PASSWORD]', $pNew, $sql);
+
+        mysqli_query($conn, $sql);
+        return true;
+    }
+
+    // function to delete account
+    function deleteAcc($u) {
+        global $conn;
+        global $JSON_DataBase_Info;
+        $sql = $JSON_DataBase_Info['profile']['deleteAccount'];
+
+        // delete all users comments
+        $sql['deleteComments'] = str_replace('[USERNAME]', $u, $sql['deleteComments']);
+        mysqli_query($conn, $sql['deleteComments']);
+
+        // delete comments on user post
+        $sql['deletePostComments'] = str_replace('[USERNAME]', $u, $sql['deletePostComments']);
+        mysqli_query($conn, $sql['deletePostComments']);
+
+        // delete posts from user
+        $sql['deletePosts'] = str_replace('[USERNAME]', $u, $sql['deletePosts']);
+        mysqli_query($conn, $sql['deletePosts']);
+
+        // delete account
+        $sql['getUserId'] = str_replace('[USERNAME]', $u, $sql['getUserId']);
+        $result = mysqli_fetch_assoc(mysqli_query($conn, $sql['getUserId']));
+        $sql['deleteAcc'] = str_replace('[ID]', $result['ID'], $sql['deleteAcc']);
+        mysqli_query($conn, $sql['deleteAcc']);
     }
 ?>

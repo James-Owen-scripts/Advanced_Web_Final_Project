@@ -124,6 +124,67 @@
                 echo json_encode(showMyPosts($_SESSION['username']));
                 exit();
                 break;
+
+            case 'myProfile':
+                echo json_encode(profileData($_SESSION['username']));
+                exit();
+                break;
+
+            case 'changeExperience':
+                updateExpereince($_POST['experience'], $_SESSION['username']);
+                exit();
+                break;
+
+            case 'changeSquatMax':
+                updateSquat($_POST['squatIn'], $_SESSION['username']);
+                exit();
+                break;
+
+            case 'changeBenchMax':
+                updateBench($_POST['benchIn'], $_SESSION['username']);
+                exit();
+                break;
+
+            case 'changeDeadMax':
+                updateDeadlift($_POST['deadIn'], $_SESSION['username']);
+                exit();
+                break;
+
+            case 'changeUsername':
+                if (!updateUsername($_POST['usernameIn'], $_SESSION['username'])) {
+                   echo 'userExists'; 
+                }
+                else {
+                    $_SESSION['username'] = $_POST['usernameIn'];
+                    echo 'usernameChanged';
+                }
+                exit();
+                break;
+
+            case 'changeEmail':
+                if (!updateEmail($_POST['emailIn'], $_SESSION['username'])) {
+                    echo 'emailExists';
+                }
+                else {
+                    echo 'emailChanged';
+                }
+                exit();
+                break;
+
+            case 'changePassword':
+                if (!updatePassword($_POST['passwordIn'], $_POST['passwordOld'], $_SESSION['username'])) {
+                    echo 'wrongPassword';
+                }
+                else {
+                    echo 'passwordChanged';
+                }
+                exit();
+                break;
+
+            case 'deleteAccount':
+                deleteAcc($_SESSION['username']);
+                exit();
+                break;
                 
             default:
                 echo "Unknown command from start Page<br>";
