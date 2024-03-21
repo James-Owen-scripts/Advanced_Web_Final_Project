@@ -320,26 +320,6 @@
             <div class="container bg-light">
                 <h1>My Posts:</h1>
                 <div id="myPosts">
-                    <div class="card bg-info mb-2">
-                        <div class="card-header">
-                            <h2>Username</h2>
-                            <h3>Experience</h3>
-                            <h3>Totals</h3>
-                            <button type="button" view-mypost-com-id="1" class="btn btn-outline-primary">View Comments</button>
-                            <button type="button" delete-mypost-id="1" class="btn btn-outline-danger">Delete post</button>
-                        </div>
-                        <div class="card-body">
-                            <h3>Post Title</h3>
-                        </div>
-                        <div class="card-footer">
-                            <p style="color: grey;">Date posted</p>
-                        </div>
-                    </div>
-                    <div class="card bg-info mb-2">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Body</div>
-                        <div class="card-footer">footer</div>
-                    </div>
                 </div>
                 <div class="mt-2">
                     <p>End of my post content</p>
@@ -732,6 +712,7 @@
                 type: 'POST',
                 data: query,
                 success: (data) => {
+                    console.log(data);
                     data = JSON.parse(data);
                     let str = '';
 
